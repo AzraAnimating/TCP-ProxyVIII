@@ -1,11 +1,17 @@
 package main
 
 import (
-	"github.com/docker/go-connections/sockets"
+	"net"
 )
 
 func openProxy() {
-	listener, err := sockets.NewTCPSocket("0.0.0.0:12345", nil)
+
+	tcpAddress, addressError := net.ResolveTCPAddr("tcp", "0.0.0.0:12345")
+	if addressError != nil {
+		return
+	}
+
+	listener, err := net.ListenTCP("tcp", tcpAddress)
 	if err != nil {
 		return
 	}
